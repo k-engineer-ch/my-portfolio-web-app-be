@@ -3,18 +3,19 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 
-	"github.com/caarlos0/env/v10"
 	"github.com/gin-gonic/gin"
 )
 
-type config struct {
-	supabaseUrl string `env:"SUPABASE_URL"`
-	supabaseKey string `env:"SUPABASE_KEY"`
-}
-
 func main() {
 	fmt.Println(">>> Start API")
+
+	supabaseUrl := os.Getenv("SUPABASE_URL")
+	supabaseKey := os.Getenv("SUPABASE_KEY")
+
+	fmt.Println(supabaseUrl)
+	fmt.Println(supabaseKey)
 
 	// supabaseUrl := "https://glfgqyvbbqkpxrxizccv.supabase.co"
 	// supabaseKey := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdsZmdxeXZiYnFrcHhyeGl6Y2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTA5MDQyNDgsImV4cCI6MjAyNjQ4MDI0OH0.PFX1AZP2DJwgQWrqI3zNJDi9WUs8UpIJS2fRZzol8Uo"
@@ -27,13 +28,6 @@ func main() {
 	// }
 
 	// fmt.Println(results) // Selected rows
-
-	cfg := config{}
-	if err := env.Parse(&cfg); err != nil {
-		fmt.Printf("%+v\n", err)
-	}
-
-	fmt.Printf("%+v\n", cfg)
 
 	r := gin.Default()
 
