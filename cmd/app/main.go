@@ -6,28 +6,29 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	supa "github.com/nedpals/supabase-go"
 )
 
 func main() {
 	fmt.Println(">>> Start API")
 
+	// Supabaseへの接続情報「Project URL」を環境変数から取得
 	supabaseUrl := os.Getenv("SUPABASE_URL")
+	// Supanaseへの接続情報「Project API keys」を環境変数から取得
 	supabaseKey := os.Getenv("SUPABASE_KEY")
 
-	fmt.Println(supabaseUrl)
-	fmt.Println(supabaseKey)
+	// Supabaseへの接続クライアント作成
+	supabase := supa.CreateClient(supabaseUrl, supabaseKey)
 
-	// supabaseUrl := "https://glfgqyvbbqkpxrxizccv.supabase.co"
-	// supabaseKey := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdsZmdxeXZiYnFrcHhyeGl6Y2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTA5MDQyNDgsImV4cCI6MjAyNjQ4MDI0OH0.PFX1AZP2DJwgQWrqI3zNJDi9WUs8UpIJS2fRZzol8Uo"
-	// supabase := supa.CreateClient(supabaseUrl, supabaseKey)
+	// Select処理（サンプル）
+	var results map[string]interface{}
+	err := supabase.DB.From("expenses").Select("*").Single().Execute(&results)
+	if err != nil {
+		panic(err)
+	}
 
-	// var results map[string]interface{}
-	// err := supabase.DB.From("countries").Select("*").Single().Execute(&results)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// fmt.Println(results) // Selected rows
+	// 検索結果を出力
+	fmt.Println(results)
 
 	r := gin.Default()
 
